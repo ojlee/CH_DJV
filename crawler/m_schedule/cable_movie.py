@@ -62,7 +62,7 @@ def scrap(cur_ch):
 
     infopac = []
     for i in range(0, len(title)):
-        if title[i] != title[i-1]: ##중복 영화막기
+        if title[i].text != title[i-1].text: ##중복 영화막기
             info = []
             info.append(cur_ch[0])
             info.append(title[i].text)
