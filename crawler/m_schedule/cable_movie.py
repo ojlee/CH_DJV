@@ -27,6 +27,16 @@ driver = webdriver.Chrome(chrome_options=options)
 
 year = 0
 
+##db 초기화 함수
+def dbinit():
+    print('이전 데이터 삭제중')
+    queryset = OcnSchedule.objects.all()
+    queryset.delete()
+    queryset = CgvSchedule.objects.all()
+    queryset.delete()
+    queryset = SActionSchedule.objects.all()
+    queryset.delete()
+
 ##페이지 접속 함수
 def connect():
     driver.implicitly_wait(2)
@@ -114,7 +124,7 @@ def progressBar(value, endvalue, bar_length):
 
 
 if __name__=='__main__':
-
+    dbinit()
     connect()
     global year
     year = int(time.ctime().split(' ')[-1])  ##올 해 설정
