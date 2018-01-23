@@ -22,8 +22,8 @@ options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 options.add_argument("disable-gpu")
-cDriverpath = chrome_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver_win32/chromedriver')
-driver = webdriver.Chrome(cDriverpath, chrome_options=options)
+# cDriverpath = chrome_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver_win32/chromedriver')
+driver = webdriver.Chrome(chrome_options=options)
 
 year = 0
 
