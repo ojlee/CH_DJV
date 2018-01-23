@@ -137,7 +137,13 @@ if __name__=='__main__':
         value = 0
         while True:
             progressBar(value, 730, 20)
-            driver.implicitly_wait(1)
+            # driver.implicitly_wait(1)
+            try:
+                title = WebDriverWait(driver, 10) \
+                    .until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.intro_main > h3")))
+                print(title.text)
+            finally:
+                driver.quit()
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/ul/li[1]/a').click()  ##전날짜
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/a[1]/img').click()    ##이전날짜 더보기
             infoset = scrap(cur_ch) #긁어오기
