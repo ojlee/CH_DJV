@@ -139,7 +139,6 @@ if __name__=='__main__':
             progressBar(value, 730, 20)
             # driver.implicitly_wait(1)
             title = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="Content"]/form/div[7]/a[1]/img')))
-            print(title.text)
             
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/ul/li[1]/a').click()  ##전날짜
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/a[1]/img').click()    ##이전날짜 더보기
