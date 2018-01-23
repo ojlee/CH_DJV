@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71d174e7-bc65-40bb-a457-c06c821d5cfa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crawler/m_schedule/cable_movie.py" afterPath="$PROJECT_DIR$/crawler/m_schedule/cable_movie.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crawler/m_schedule/m_schedule/settings.py" afterPath="$PROJECT_DIR$/crawler/m_schedule/m_schedule/settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,8 +16,8 @@
       <file leaf-file-name="cable_movie.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/crawler/m_schedule/cable_movie.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="655">
-              <caret line="145" column="29" lean-forward="false" selection-start-line="145" selection-start-column="29" selection-end-line="145" selection-end-column="29" />
+            <state relative-caret-position="484">
+              <caret line="142" column="113" lean-forward="true" selection-start-line="142" selection-start-column="113" selection-end-line="142" selection-end-column="113" />
               <folding>
                 <element signature="e#1#36#0" expanded="true" />
               </folding>
@@ -209,8 +207,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/crawler/m_schedule/cable_movie.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="655">
-          <caret line="145" column="29" lean-forward="false" selection-start-line="145" selection-start-column="29" selection-end-line="145" selection-end-column="29" />
+        <state relative-caret-position="484">
+          <caret line="142" column="113" lean-forward="true" selection-start-line="142" selection-start-column="113" selection-end-line="142" selection-end-column="113" />
           <folding>
             <element signature="e#1#36#0" expanded="true" />
           </folding>

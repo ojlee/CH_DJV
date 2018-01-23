@@ -140,7 +140,7 @@ if __name__=='__main__':
             # driver.implicitly_wait(1)
             try:
                 title = WebDriverWait(driver, 10) \
-                    .until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.intro_main > h3")))
+                    .until(EC.presence_of_element_located((By.XPATH, '//*[@id="Content"]/form/div[7]/a[1]/img')))
                 print(title.text)
             finally:
                 driver.quit()
