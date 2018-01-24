@@ -22,7 +22,12 @@ options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 options.add_argument("disable-gpu")
+
+##윈도우용
 # cDriverpath = chrome_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver_win32/chromedriver')
+# driver = webdriver.Chrome(chrome_options=options)
+
+##리눅스용
 driver = webdriver.Chrome(chrome_options=options)
 
 year = 0
@@ -138,8 +143,9 @@ if __name__=='__main__':
         while True:
             progressBar(value, 730, 20)
             # driver.implicitly_wait(1)
-            title = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="Content"]/form/div[7]/a[1]/img')))
-            
+            # explicitly wait 최대 10초까지 기다려줌
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="Content"]/form/div[7]/a[1]/img')))
+
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/ul/li[1]/a').click()  ##전날짜
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/a[1]/img').click()    ##이전날짜 더보기
             infoset = scrap(cur_ch) #긁어오기
