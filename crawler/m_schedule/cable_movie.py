@@ -63,6 +63,33 @@ def check_year(date,year):
         year -= 1
     return year
 
+##제목가공 함수 - 공백, 부 제거
+def title_cutting(title):
+    title = title.replace(" ", "") ##공백제거
+    title = re.sub("\d부$", "", title) ##부 제거
+    title = re.sub("[(].*[)]", "", title) ## (연도)포함 괄호 내부 내용 제거
+    title = re.sub("[-:]", " ", title) ## "-" 과 ":"은 공백으로
+    title = re.sub("[.]", "", title) ## "."은 제거
+    return title
+
+##제목 필터링 조건 함수
+def title_filtering(ctitle, ptitle):
+    #필터
+    term = ['크리미널마인드', '코미디빅리그' ,'38사기', '나인뮤지스', '청춘무비', '악의도시' ,'FC', 'CSI', 'NCIS', '멘탈리스트', 'SVU', '시즌', '비하인드', '시상식', '주말N', '무비버스터즈', '무비멘터리', '액션매니악']
+
+    #필터링
+    for i in range(0, len(term)):
+        p = re.compile('^.*'+term[i]+'.*$')
+        if p.search(ctitle) != None:
+            return False
+
+    #바로 직전과 달라도 탈락
+    if ctitle != ptitle:
+        return True
+
+    return False
+
+
 ## 긁기함수 딕션{채널 제목 상영시간 날짜} 반환
 def scrap(cur_ch):
     html = driver.page_source
@@ -74,13 +101,14 @@ def scrap(cur_ch):
     ## 자료형 맞춰주기
     global year
     year = check_year(date, year)
-
     infopac = []
     for i in range(0, len(title)):
-        if title[i].text != title[i-1].text: ##중복 영화막기
+        title[i] = title_cutting(title[i].text)##제목가공(str)
+
+        if title_filtering(title[i], title[i-1]): ##중복 영화막기
             info = []
             info.append(cur_ch[0])
-            info.append(title[i].text)
+            info.append(title[i])
             info.append(datetime.strptime(time[i].text, '%H:%M'))
             datenum = re.findall('\d+', date[0].text.strip())
             yeardate = str(year) + '-' + datenum[0] + '-' + datenum[1]  ##날짜를 출력
@@ -148,6 +176,7 @@ if __name__=='__main__':
 
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/ul/li[1]/a').click()  ##전날짜
             driver.find_element_by_xpath('//*[@id="Content"]/form/div[7]/a[1]/img').click()    ##이전날짜 더보기
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'sheetTable')))
             infoset = scrap(cur_ch) #긁어오기
             value += 1
             if infoset != []:    #긁을것이 있는지 검사 없으면 채널변경
