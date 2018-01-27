@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 from selenium import webdriver
 import csv
-import re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -15,6 +14,7 @@ django.setup()
 
 from parsed_data.models import Movie
 
+count = 0
 
 #파일 위치
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,9 +34,12 @@ driver.implicitly_wait(2)
 driver.get('http://movie.daum.net/main/new#slide-1-0')
 
 
-def crawl(movie):
+def crawl(movie,dblen):
     if movie == 'title':
-        print('return')
+        return    #중복검사
+    row = Movie.objects.filter(title=movie)
+    print(row)
+    if row == movie:
         return
     
     #찾으려는 영화
@@ -53,12 +56,7 @@ def crawl(movie):
     #검색 결과에서 첫번째 글에 접근
     page_list = ""
     WebDriverWait(driver,10).until(EC.presence_of_element_located((By.ID, "movie_result")))
-    sr_num = driver.find_element_by_xpath('//*[@id="movie_result"]/strong/span')
-
-    if sr_num.text == '1':
-        page_list = driver.find_element_by_xpath('//*[@id="contents_result"]/li/a[1]')
-    else:
-        page_list = driver.find_element_by_xpath('//*[@id="contents_result"]/li[1]/a[1]')
+    page_list = driver.find_element_by_xpath('//*[@id="contents_result"]/li[1]/a[1]')
     page_list.click()
 
     #html 얻기
@@ -74,13 +72,9 @@ def crawl(movie):
         '#mArticle > div.detail_movie.detail_main > div.movie_detail > div.movie_basic > div.main_detail > div.detail_summarize > div > div.subject_movie > a > em'
         )
 
-    # #제목
-    # for movie_title in mv_title:
-    #     target_title = movie_title.get_text()
-    #     target_title = target_title.replace(" ", "")  ##공백제거
-    #     target_title = re.sub("[(].*[)]", "", target_title)  ## (연도)포함 괄호 내부 내용 제거
-    #     target_title = re.sub("[-:]", " ", target_title)  ## "-" 과 ":"은 공백으로
-    #     target_title = re.sub("[.]", "", target_title)  ## "."은 제거
+    #제목
+    for movie_title in mv_title:
+        target_title = movie_title.get_text()
         
     #평점
     for movie_grade in mv_grade:
@@ -99,9 +93,6 @@ def crawl(movie):
         #국가
         elif info_code == 1 :
             target_nation = categorize.text.strip()
-            target_nation = target_nation.replace(" ", "")
-            target_nation = target_nation.replace("\t", "")
-            print(target_nation)
 
         #개봉일
         elif info_code == 2 :
@@ -138,7 +129,12 @@ def crawl(movie):
                 target_actor = target_actor + ',' + people[prt]
 
     #DB에 저장
-    Movie(title=target_movie,grade=target_grade, genre=target_genre, nation=target_nation, premiere=target_premiere, director=target_director, actor=target_actor).save()
+    Movie(title=target_title,grade=target_grade, genre=target_genre, nation=target_nation, premiere=target_premiere, director=target_director, actor=target_actor).save()
+    
+    #영화제목 프린트
+    global count
+    count += 1
+    print(count +"/"+str(dblen) + movie)
 
 
 
@@ -147,13 +143,11 @@ queryset = Movie.objects.all()
 queryset.delete()
 
 #편성표 상의 영화 정보 수집(합쳐지고 중복은 제거된 리스트)
-uni = open('union_sche4.csv', 'r', encoding='utf-8')
-rdr_uni = csv.reader(uni, delimiter=',', quotechar='"')
-index = 1
+uni = open('union_sche3.csv', 'r', encoding='utf-8')
+numlines = len(uni.readlines())
+rdr_uni = csv.reader(uni)
 for movie_list in rdr_uni:
-    print(str(index) + " // " + str(movie_list))
-    crawl(movie_list[1])
-    index += 1
+    crawl(movie_list, numlines)
 uni.close()
 
 print("done!") #작업이 완료 되면 done 출력
